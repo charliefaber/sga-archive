@@ -11,150 +11,127 @@
 
 	<link rel="stylesheet" type="text/css" href="../public/css/results.css"></head>
 </head>
-<body style="background-image: url('../public/images/background.jpg'")>
 <script type="text/javascript" src="../public/js/advanced.js"></script>
+
+<body style="background-image: url('../public/images/background.jpg'")>
 <br>
-<script type="text/javascript">
 
-</script>
 <div class="container">
-
+<br>
 
 	<div class="header">
-	<br>
-		<a href="/upload"><button style="margin-right: 10px; display:inline; float: right" type="button" class="btn btn-defauls btn-md">Upload</button></a>
-			<a href="/logout"><button style="margin-right: 10px; display:inline; float: right" type="button" class="btn btn-danger btn-md">Log Out</button></a>
+		<a href="/upload"><button style="margin-right: 10px; display:inline; float: right" type="button" class="btn btn-default btn-md">Upload</button></a>
+		<a href="/logout"><button style="margin-right: 10px; display:inline; float: right" type="button" class="btn btn-danger btn-md">Log Out</button></a>
 
 		<div class="logo">
 			<a href="/"><img style="margin-left: 8px" src="../public/images/logo.jpg" class="logo logoImg"></a>
 		</div>
 		
 		<div class="search">
-
-			
 			<h2 style="font-weight: bold;">Georgia College<br></h2>
 			<h3>Student Government Association</h3>
 			<h4 style="font-style: italic; padding-top: 6px;">Document Archive</h4>
-			
 			<br>
+
 			<form ref="searchForm"
-			  id="searchForm"
-			  action="/search"
-			  method="post"
+			  	   id="searchForm"
+			   action="/search"
+			   method="post"
 			  enctype="multipart/form-data">
 			<fieldset>
+				<input value="{{search}}" type="text" class="form-control input-md" id="search" name="searchText"  placeholder="Enter your search query here..." required>
 
-			<input value="{{search}}" type="text" class="form-control input-md" id="search" name="searchText"  placeholder="Enter your search query here..." required>
+				<select id="filterSelect" name="filterSelect" class="input-md form-control">
+					<option value="relevancy" {{#if buttonVals.relevancy}}selected{{/if}}>Most Relevant</option>
+					<option value="recency" {{#if buttonVals.recency}}selected{{/if}}>Most Recent</option>
+					<option value="cost (highest first)" {{#if buttonVals.highest}}selected{{/if}}>Highest Dollar Amount</option>
+					<option value="cost (lowest first)" {{#if buttonVals.lowest}}selected{{/if}}>Lowest Dollar Amount</option>
+				</select>
 
-			<select id="filterSelect" name="filterSelect" class="input-md form-control">
-				<option value="relevancy" {{#if buttonVals.relevancy}}selected{{/if}}>Most Relevant</option>
-				<option value="recency" {{#if buttonVals.recency}}selected{{/if}}>Most Recent</option>
-				<option value="cost (highest first)" {{#if buttonVals.highest}}selected{{/if}}>Highest Dollar Amount</option>
-				<option value="cost (lowest first)" {{#if buttonVals.lowest}}selected{{/if}}>Lowest Dollar Amount</option>
-			</select>
-			<button type="submit" name="searchBtn" class="btn btn-primary btn-md">Search</button><br><br>
-			<a href="/advanced">Advanced Search</a>
-			<br>
+				<button type="submit" name="searchBtn" class="btn btn-primary btn-md">Search</button><br><br>
+				<a href="/advanced">Advanced Search</a>
+				<br>
 			</fieldset>
 			</form>
 		</div>
-		
-
 	</div>
 	
 	<div class="containerdivNewLine"></div>
 	<br>
-<hr>
+	<hr>
 
 	<div id="results">
 	{{#if fail}} 
-	
-	 		<div class="row no-gutter">
-		 		<div class="col-md-1"></div>
-		 		<div class="col-md-10">
-					<h2 style="font-weight:bold; margin-top:0px" >No results for query:</h2>
-					<span style="font-size:1.5em; font-style:italic">"{{search}}"</span>
-					
-
-				</div>
-				<div class="col-md-1"></div>
+	 	<div class="row no-gutter">
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+				<h2 style="font-weight:bold; margin-top:0px" >No results for query:</h2>
+				<span style="font-size:1.5em; font-style:italic">"{{search}}"</span>					
 			</div>
-			<hr>
-		<br><br><br><br><br><br><br><br><br><br>
+			<div class="col-md-1"></div>
+		</div>
+		<hr>
+		<br><br><br><br><br>
+		<br><br><br><br><br>
 	{{/if}}
 
-
-
-
-
-	 {{#if results}}
-	 		<div class="row no-gutter">
-		 		<div class="col-md-1"></div>
-		 		<div class="col-md-10">
-					<h2 style="font-weight:bold; margin-top:0px" >Showing results sorted by {{buttonVals.filter}}</h2>
-					<span style="font-size:1.5em; font-style:italic">"{{search}}"</span>
-					</center>
-				</div>
-				<div class="col-md-1"></div>
+	{{#if results}}
+	 	<div class="row no-gutter">
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
+				<h2 style="font-weight:bold; margin-top:0px" >Showing results sorted by {{buttonVals.filter}}</h2>
+				<span style="font-size:1.5em; font-style:italic">"{{search}}"</span>
 			</div>
-<hr>
+			<div class="col-md-1"></div>
+		</div>
+		<hr>
+	 	
 	 	{{#each results}}
-<br>
-	 		<div class="row no-gutter"> 
-				<div class="col-md-2"></div>
-				<div class="col-md-8">
-				
-					<h3 style="font-weight:bold">{{this._id}}</h3>
-					<span style="font-size: 1.2em; font-style: italic;">Date: {{this.date}}</span><br><br>
-					<h3 >A {{this.docType}}</h3>
-					<span style="font-size: 1.2em">{{this.tagline}}</span><br><br>
+		<br>
+	 	<div class="row no-gutter"> 
+			<div class="col-md-2"></div>
+			<div class="col-md-8">	
+				<h3 style="font-weight:bold">{{this._id}}</h3>
+				<span style="font-size: 1.2em; font-style: italic;">Date: {{this.date}}</span><br><br>
+				<h3 >A {{this.docType}}</h3>
+				<span style="font-size: 1.2em">{{this.tagline}}</span><br><br>
 
+				<div class="panel-group">
+				  <div class="panel panel-default">
+				    <div class="panel-heading">
+				      <h4 class="panel-title">
+				        <a data-toggle="collapse" href="#collapse{{inc @index}}">Click here to see full text of {{this._id}}</a>
+				      </h4>
+				    </div>
+				    <div id="collapse{{inc @index}}" class="panel-collapse collapse">
+				      <div class="panel-body">{{this.text}}</div>
+				    </div>
+				  </div>
+				</div>
+				<br>
 
-
-
-					<div class="panel-group">
-					  <div class="panel panel-default">
-					    <div class="panel-heading">
-					      <h4 class="panel-title">
-					        <a data-toggle="collapse" href="#collapse{{inc @index}}">Click here to see full text of {{this._id}}</a>
-					      </h4>
-					    </div>
-					    <div id="collapse{{inc @index}}" class="panel-collapse collapse">
-					      <div class="panel-body">{{this.text}}</div>
-					    </div>
-					  </div>
-					</div>
-					<br>
-
-						<a href="/delete/{{this._id}}"><button style="margin-right: 10px; display:inline; float: left" type="button" class="btn btn-danger btn-md" onclick="return confirm('Are you SURE you want to delete {{this._id}} from the database? This cannot be undone!');">Delete</button></a>
-						<br>
+				<a href="/delete/{{this._id}}"><button style="margin-right: 10px; display:inline; float: left" type="button" class="btn btn-danger btn-md" onclick="return confirm('Are you SURE you want to delete {{this._id}} from the database? This cannot be undone!');">Delete</button></a>
+				<br>
 					
-					<a href="/download/{{this._id}}"><span style="display: inline; float: right">Download Original File</span></a>
-
+				<a href="/download/{{this._id}}"><span style="display: inline; float: right">Download Original File</span></a>
 				</div>
+			<div class="col-md-2"></div>
+		</div>
 
-				<div class="col-md-2"></div>
-			</div>
-
-				 		<div class="row no-gutter"> 
-				<div class="col-md-1"></div>
-				<div class="col-md-10">
+		<div class="row no-gutter"> 
+			<div class="col-md-1"></div>
+			<div class="col-md-10">
 				<hr>
-				</div>
-				<div class="col-md-1"></div>
-</div>
-	 		
+			</div>
+			<div class="col-md-1"></div>
+		</div>	
 	 	{{/each}}
 	 {{/if}}
-
 	</div>
 	<br>
 	
-
 	<div style="margin-bottom:10px; font-weight: bold" class="footer">
-
-			<a style="display: inline; float: left;" href="/help">Help</a>
-
+		<a style="font-size: 2em; display: inline; float: left;" href="/help">Help</a>
 	</div>
 </div>
 <br>

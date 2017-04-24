@@ -11,41 +11,40 @@
 	<link rel="stylesheet" type="text/css" href="../public/css/results.css">
 </head>
 <body style="background-image: url('../public/images/background.jpg'")>
+<br>
+
 <div class="container">
 	<br>
-		<div class="menu">
-		</div>
+
 	<div class="header">
-				<a href="/upload"><button style="margin-right: 10px; display:inline; float: right" type="button" class="btn btn-default btn-md">Upload</button></a>
+		<a href="/upload"><button style="margin-right: 10px; display:inline; float: right" type="button" class="btn btn-default btn-md">Upload</button></a>
 
 		<div class="logo">
-
 			<a href="/"><img style="margin-left: 8px" src="../public/images/logo.jpg" class="logo logoImg"></a>
 		</div>
 		
 		<div class="search">
-
-			
 			<h2 style="font-weight: bold;">Georgia College<br></h2>
 			<h3>Student Government Association</h3>
 			<h4 style="font-style: italic; padding-top: 6px;">Document Archive</h4>
-			
 			<br>
+
 			<form ref="searchForm"
-			  id="searchForm"
-			  action="/search"
-			  method="post"
+			  	   id="searchForm"
+			   action="/search"
+			   method="post"
 			  enctype="multipart/form-data">
 			<fieldset>
 
 			<input type="text" class="form-control input-md" id="search" name="searchText"  placeholder="Enter your search query here..." required>
 
 			<select id="filterSelect" name="filterSelect" class="input-md form-control">
-					<option value="relevancy" selected>Most Relevant</option>
-					<option value="recency">Most Recent</option>
+				<option value="relevancy" selected>Most Relevant</option>
+				<option value="recency">Most Recent</option>
 				<option value="highest" {{#if buttonVals.highest}}selected{{/if}}>Highest Dollar Amount</option>
 				<option value="lowest" {{#if buttonVals.lowest}}selected{{/if}}>Lowest Dollar Amount</option>
 			</select>
+
 			<button type="submit" name="searchBtn" class="btn btn-primary btn-md">Search</button><br><br>
 			<a href="/advanced">Advanced Search</a>
 			<br>
@@ -56,50 +55,44 @@
 	
 	<div class="containerdivNewLine"></div>
 	<br>
-<hr>
-<div class="row no-gutter">
-<div class="col-md-2"></div>
+	<hr>
 
-<div class="col-md-8">
-<h2 style="margin-top: 0px">Contact Us:</h2>
-<span style="font-weight: bold">Phone:</span> 478-445-2695<br>
-<span style="font-weight: bold">Fax:</span> 478-445-1472<br>
-<span style="font-weight: bold">Email:</span> sga@gcsu.edu<br>
-</div>
-<div class="col-md-2"></div>
-</div>
+	<div class="row no-gutter">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<h2 style="margin-top: 0px">Contact Us:</h2>
+			<span style="font-weight: bold">Phone:</span> 478-445-2695
+			<br>
+			<span style="font-weight: bold">Fax:</span> 478-445-1472
+			<br>
+			<span style="font-weight: bold">Email:</span> sga@gcsu.edu
+			<br>
+		</div>
+		<div class="col-md-2"></div>
+	</div>
 
-<hr>
-<div class="row no-gutter">
-<div class="col-md-2"></div>
-<div class="col-md-8">
-	<center><h2 style="margin-top: 0px; margin-bottom: 0px;">Website User Guide:</h2></center>
+	<hr>
 
-</div>
-<div class="col-md-2"></div>
+	<div class="row no-gutter">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<center><h2 style="margin-top: 0px; margin-bottom: 0px;">Website User Guide:</h2></center>
+		</div>
+		<div class="col-md-2"></div>
+	</div>
 
-</div>
-<hr>
+	<hr>
 
 	<div id = "userGuide">
 		<iframe width="850" height="850" frameborder="0" src="https://docs.google.com/document/d/1A1GPh4uFEKRBMWCuDMGWcyiF9FgFW7i6B8Aaxxp9lts/pub?embedded=true"></iframe>
 	</div>
-<br><br>
-
-
-
-
-
-
+	<br><br>
 
 	<div style="margin-bottom:10px; font-weight: bold" class="footer">
-
-			<a style="display: inline; float: left;" href="/help">Help</a>
-	
+		<a style="font-size: 2em; display: inline; float: left;" href="/help">Help</a>
 	</div>
+
 </div>
-
-
 <br>
 
 </body>

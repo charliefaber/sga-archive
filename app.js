@@ -32,6 +32,7 @@ app.use(bodyParser.json());
 app.use(session({ secret: 'keyboard cat',
                   resave: true,
                   saveUninitialized: true,
+                  cookie: {maxAge: 1800000}
                 }));
 
 var authAdmin = function(req, res, next) {

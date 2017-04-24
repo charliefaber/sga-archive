@@ -219,13 +219,14 @@ app.post('/upload', function(req, res) {
     // console.log(req.body);
     // console.log(req.files);
   });
-
+  var admin = req.se
   var upload = {idText: idText, doctypeSelect: doctypeSelect, dollarText: dollarText, dateSelect: dateSelect, tagText:tagText, bodyText:bodyText};
   MongoClient.connect(configDb.url, function(err, db) {
     assert.equal(null, err);
       db.collection('documents').find({_id: idText}).toArray(function(err, item) {
         if(item[0] == null){
           db.collection('documents').find().sort({ date: -1}).limit(5).toArray(function(err, items) {
+
             res.render(path.join(__dirname, '../views/upload.handlebars'), { redirect: true, upload: upload, success: true });
           });
         } else {

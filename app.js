@@ -1,28 +1,26 @@
+// ------------- SERVER SIDE -------------
+
+// instantiate npms
 var http = require('http');
 var express = require('express');
 var fileUpload = require('express-fileupload');
 var exphbs = require('express-handlebars');
 var textract = require('textract');
 var path = require('path');
-// var fs = require('fs');
-//var jsonQuery = require('json-query');
-//var methodOverride = require('method-override');
-
-var port = process.env.PORT || 3000;
-//var mongoose = require('mongoose');
-//var passport = require('passport');
-
+// MongoDB setup
 var mongo = require('mongodb');
 var assert = require('assert');
 var MongoClient = mongo.MongoClient;
 var configDb = require('./config/database.js');
-//var auth = require('./config/auth.js');
 
 var session = require('express-session');
-var app = express();
-
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+
+var bcrypt = require('bcrypt-nodejs');
+var salt = bcrypt.genSaltSync(10);
+
+var app = express();
 
 app.use(cookieParser());
 
@@ -34,28 +32,6 @@ app.use(session({ secret: 'keyboard cat',
                   saveUninitialized: true,
                   cookie: {maxAge: 1800000}
                 }));
-
-var authAdmin = function(req, res, next) {
-  if(req.session && req.session.admin)
-    return next();
-  else
-    res.sendFile(path.join(__dirname + '/views/login.html'))
-};
-
-
-var bcrypt = require('bcrypt-nodejs');
-// Generate a salt
-var salt = bcrypt.genSaltSync(10);
-
-// // Hash the password with the salt
-// var hash = bcrypt.hashSync("ChampionOfRrr", salt);
-
-// MongoClient.connect(configDb.url, function(err, db) {
-//   assert.equal(null, err) 
-  
-//   db.collection('users').insert({name: "admin", password: hash});
-
-// });
 
 app.use(fileUpload());
 app.use(express.static(__dirname));
@@ -70,9 +46,27 @@ var hbs = exphbs.create({
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
+require('./app/routes.js')(app);
+
 //routers
 //require('./config/passport.js');
-require('./app/routes.js')(app);
+
+// // Hash the password with the salt
+// var hash = bcrypt.hashSync("ChampionOf3Rs", salt);
+
+// MongoClient.connect(configDb.url, function(err, db) {
+//   assert.equal(null, err) 
+  
+//   db.collection('users').insert({name: "admin", password: hash});
+
+// });
+
+var authAdmin = function(req, res, next) {
+  if(req.session && req.session.admin)
+    return next();
+  else
+    res.sendFile(path.join(__dirname + '/views/login.html'))
+};
 
 app.get('/upload', authAdmin, function(req, res) {
   res.render(path.join(__dirname, "/views/upload.handlebars"),{redirect: false});

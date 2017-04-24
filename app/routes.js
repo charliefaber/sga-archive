@@ -1,7 +1,6 @@
 //app/routes.js
 var assert = require('assert');
-var MongoClient = require('mongodb').MongoClient,
-    test = require('assert');
+var MongoClient = require('mongodb').MongoClient;
 var configDb = require('../config/database.js');
 var path = require('path');
 var express = require('express');

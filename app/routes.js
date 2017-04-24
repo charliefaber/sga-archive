@@ -26,6 +26,24 @@ app.get('/', function(req, res) {
     });
 });
 
+app.get('/advanced', function(req, res) {
+  var session = req.session.admin;
+  if(session) 
+    res.sendFile(path.join(__dirname, "/../views/advancedAdmin.html"));
+  else
+    res.sendFile(path.join(__dirname, "/../views/advanced.html"));
+});
+
+app.get('/download/:file(*)', function(req, res){
+  var file = req.params.file;
+  var p = path.join(__dirname, "../uploads/", file + ".docx");
+  res.download(p);
+});
+
+app.get('/login', function(req, res) {
+  res.sendFile(path.join(__dirname, "../views/login.html"));
+});
+
 app.get('/logout', function(req, res) {
   var user = req.session.user;
   console.log("logging out " + user);
@@ -33,23 +51,32 @@ app.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
-app.post('/checkLogin', function(req, res) {
-  var username = req.body.username;
-  var password = req.body.password;
+app.get('/delete/:doc',function(req,res) {
+  var doc = req.params.doc;
 
   MongoClient.connect(configDb.url, function(err, db) {
-    db.collection('users').find({name: username}).toArray(function(err, items) {
-      if(items[0] == undefined) {
-        res.redirect('/login');
-      } 
-      else if(bcrypt.compareSync(password, items[0].password)) {
-        req.session.admin = true;
-        req.session.user = username;
-        res.redirect('/upload');
-      }
+    assert.equal(null, err);
+
+    db.collection('documents').find({_id: doc}).toArray(function(err, items) {
+      db.collection('deleted').insert(items[0]);
     });
+
+    db.collection('documents').remove({_id: doc});
+
+    res.redirect('/');
   });
 });
+
+app.get('/help', function(req, res) {
+  var session = req.session.admin;
+  if(session) 
+    res.sendFile(path.join(__dirname, "/../views/helpAdmin.html"));
+  else
+    res.sendFile(path.join(__dirname, "/../views/help.html"));
+});
+
+
+
 
 app.post('/search', function(req, res) {
   var search = req.body.searchText;         
@@ -103,103 +130,6 @@ app.post('/search', function(req, res) {
       });
     db.close();
   });
-});
-
-app.get('/delete/:doc',function(req,res) {
-  var doc = req.params.doc;
-
-  MongoClient.connect(configDb.url, function(err, db) {
-    assert.equal(null, err);
-
-    db.collection('documents').find({_id: doc}).toArray(function(err, items) {
-      db.collection('deleted').insert(items[0]);
-    });
-
-    db.collection('documents').remove({_id: doc});
-
-    res.redirect('/');
-  });
-});
-
-app.get('/download/:file(*)', function(req, res){
-  var file = req.params.file;
-  var p = path.join(__dirname, "../uploads/", file + ".docx");
-  res.download(p);
-});
-
-
-app.post('/upload', function(req, res) {
-  if (!req.files)
-    return res.status(400).send('No files were uploaded.');
-
-  var myFile = req.files.myFile;
-  var idText = req.body.idText;
-  idText = idText.trim();
-  var doctypeSelect = req.body.doctypeSelect;
-  var dollarText = req.body.dollarText;
-  var dateSelect = req.body.dateSelect;
-  var tagText = req.body.tagText;
-  var bodyText = "";
-
-  
-  var filePath = path.join(__dirname,`../uploads/${idText}.docx`);
-  myFile.mv(filePath, function(err) {
-    if (err)
-      return res.status(500).send(err);
-
-    textract.fromFileWithPath(filePath, function( error, text ) {
-      bodyText = text;
-    });
-  });
-  
-  var upload = {idText: idText, doctypeSelect: doctypeSelect, dollarText: dollarText, dateSelect: dateSelect, tagText:tagText, bodyText:bodyText};
-
-  MongoClient.connect(configDb.url, function(err, db) {
-    assert.equal(null, err);
-    db.collection('documents').find({_id: idText}).toArray(function(err, item) {
-      if(item[0] == null) {
-        db.collection('documents').find().sort({ date: -1}).limit(5).toArray(function(err, items) {
-          res.render(path.join(__dirname, '../views/upload.handlebars'), { redirect: true, upload: upload, success: true });
-        });
-      } 
-      else {
-        db.collection('documents').find().sort({ date: -1}).limit(5).toArray(function(err, items) {
-          res.render(path.join(__dirname, '../views/upload.handlebars'), {redirect: true, upload: upload, success: false });
-        });
-      }
-    });
-    
-    db.collection('documents').insertOne( {
-      "_id": idText,
-      "path": filePath,
-      "docType": doctypeSelect,
-      "amount": dollarText,
-      "date": dateSelect,
-      "tagline": tagText,
-      "text": bodyText});
-
-    db.close();
-  });
-});
-
-app.get('/login', function(req, res) {
-  res.sendFile(path.join(__dirname, "../views/login.html"));
-});
-
-app.get('/advanced', function(req, res) {
-  var session = req.session.admin;
-  if(session) 
-    res.sendFile(path.join(__dirname, "/../views/advancedAdmin.html"));
-  else
-    res.sendFile(path.join(__dirname, "/../views/advanced.html"));
-});
-
-app.get('/help', function(req, res) {
-  var session = req.session.admin;
-  if(session) 
-    res.sendFile(path.join(__dirname, "/../views/helpAdmin.html"));
-  else
-    res.sendFile(path.join(__dirname, "/../views/help.html"));
 });
 
 app.post('/advancedSearch', function(req, res) {
@@ -299,6 +229,79 @@ app.post('/advancedSearch', function(req, res) {
       else 
         res.render(path.join(__dirname, '../views/results.handlebars'), {search: search, buttonVals: buttonVals, results: items, fail: fail}); 
     });
+    db.close();
+  });
+});
+
+
+app.post('/checkLogin', function(req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+
+  MongoClient.connect(configDb.url, function(err, db) {
+    db.collection('users').find({name: username}).toArray(function(err, items) {
+      if(items[0] == undefined) {
+        res.redirect('/login');
+      } 
+      else if(bcrypt.compareSync(password, items[0].password)) {
+        req.session.admin = true;
+        req.session.user = username;
+        res.redirect('/upload');
+      }
+    });
+  });
+});
+
+app.post('/upload', function(req, res) {
+  if (!req.files)
+    return res.status(400).send('No files were uploaded.');
+
+  var myFile = req.files.myFile;
+  var idText = req.body.idText;
+  idText = idText.trim();
+  var doctypeSelect = req.body.doctypeSelect;
+  var dollarText = req.body.dollarText;
+  var dateSelect = req.body.dateSelect;
+  var tagText = req.body.tagText;
+  var bodyText = "";
+
+  
+  var filePath = path.join(__dirname,`../uploads/${idText}.docx`);
+  myFile.mv(filePath, function(err) {
+    if (err)
+      return res.status(500).send(err);
+
+    textract.fromFileWithPath(filePath, function( error, text ) {
+      bodyText = text;
+    });
+  });
+  
+  var upload = {idText: idText, doctypeSelect: doctypeSelect, dollarText: dollarText, dateSelect: dateSelect, tagText:tagText, bodyText:bodyText};
+
+  MongoClient.connect(configDb.url, function(err, db) {
+    assert.equal(null, err);
+    db.collection('documents').find({_id: idText}).toArray(function(err, item) {
+      if(item[0] == null) {
+        db.collection('documents').find().sort({ date: -1}).limit(5).toArray(function(err, items) {
+          res.render(path.join(__dirname, '../views/upload.handlebars'), { redirect: true, upload: upload, success: true });
+        });
+      } 
+      else {
+        db.collection('documents').find().sort({ date: -1}).limit(5).toArray(function(err, items) {
+          res.render(path.join(__dirname, '../views/upload.handlebars'), {redirect: true, upload: upload, success: false });
+        });
+      }
+    });
+    
+    db.collection('documents').insertOne( {
+      "_id": idText,
+      "path": filePath,
+      "docType": doctypeSelect,
+      "amount": dollarText,
+      "date": dateSelect,
+      "tagline": tagText,
+      "text": bodyText});
+
     db.close();
   });
 });

@@ -13,12 +13,12 @@
 	<link rel="stylesheet" type="text/css" href="../public/css/upload.css">
 </head>
 <script type="text/javascript">
-function checkDoctype() {
+function checkFields() {
 	var fileName = document.getElementById("myFile").value;
 	var ext = fileName.split('.').pop();
 	var div = document.getElementById('err');
 
-	if(!(ext == 'docx')) {
+	if(!(ext == 'docx') || fileName.indexOf(' ') >= 0) {
 		document.getElementById('upload-btn').disabled = true;
 		div.innerHTML = '<center><h3 style="color:red">Error: Only files of extension docx are accepted</h3></center><br>';
 	} else if(ext == 'docx') {
@@ -109,7 +109,7 @@ function checkDoctype() {
 					<img src="../public/images/newDoc.png" alt="newDoc" id="newDoc">
 					<br>
 
-        			<input type="file" name="myFile" id="myFile" onchange="checkDoctype();"  required/>
+        			<input type="file" name="myFile" id="myFile" onchange="checkFields();"  required/>
         		</div>
 				<div class="col-md-4">
 					<label for="docID">Document ID:</label>
@@ -148,7 +148,7 @@ function checkDoctype() {
 			<div class="row">
 				<div class="col-md-4"></div>
 				<div class="col-md-4">
-					<button type="submit" class="btn-block btn-lg btn btn-success" id="upload-btn" onchange="checkDoctype();">Upload</button>
+					<button type="submit" class="btn-block btn-lg btn btn-success" id="upload-btn" onchange="checkFields();">Upload</button>
 				</div>
 				<div class="col-md-4"></div>
 			</div>

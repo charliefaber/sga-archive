@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SGA Document Archive - Contact Us</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="../public/css/results.css">
+</head>
+<body style="background-image: url('../public/images/background.jpg'")>
+<div class="container">
+	<br>
+
+	<div class="header">
+
+		<a href="/upload"><button style="margin-right: 10px; display:inline; float: right" type="button" class="btn btn-default btn-md">Upload</button></a>
+			<a href="/logout"><button style="margin-right: 10px; display:inline; float: right" type="button" class="btn btn-danger btn-md">Log Out</button></a>
+
+		<div class="logo">
+
+			<a href="/"><img style="margin-left: 8px" src="../public/images/logo.jpg" class="logo logoImg"></a>
+		</div>
+		
+		<div class="search">
+
+			<h2 style="font-weight: bold;">Georgia College<br></h2>
+			<h3>Student Government Association</h3>
+			<h4 style="font-style: italic; padding-top: 6px;">Document Archive</h4>
+			
+			<br>
+			<form ref="searchForm"
+			  id="searchForm"
+			  action="/search"
+			  method="post"
+			  enctype="multipart/form-data">
+			<fieldset>
+
+			<input type="text" class="form-control input-md" id="search" name="searchText"  placeholder="Enter your search query here..." required>
+
+			<select id="filterSelect" name="filterSelect" class="input-md form-control">
+					<option value="relevancy" selected>Most Relevant</option>
+					<option value="recency">Most Recent</option>
+				<option value="cost (highest first)">Highest Dollar Amount</option>
+				<option value="cost (lowest first)">Lowest Dollar Amount</option>
+			</select>
+			<button type="submit" name="searchBtn" class="btn btn-primary btn-md">Search</button><br><br>
+			<a href="/advanced">Advanced Search</a>
+			<br>
+			</fieldset>
+			</form>
+		</div>
+	</div>
+	
+	<div class="containerdivNewLine"></div>
+	<br>
+<hr>
+
+
+
+	<div style="margin-bottom:10px; font-weight: bold" class="footer">
+
+			<a style="display: inline; float: left;" href="/help">Help</a>
+
+	</div>
+</div>
+
+
+
+
+</body>
+</html>

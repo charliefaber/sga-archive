@@ -39,7 +39,9 @@ app.get('/', function(req, res) {
 
 app.get('/logout', function(req, res) {
   req.session.destroy();
-
+  res.redirect('/');
+  var user = req.session.user;
+  console.log("logging out " + user);
 });
 
 app.post('/checkLogin', function(req, res) {
@@ -269,12 +271,18 @@ app.get('/login', function(req, res) {
 //ADVANCED SEARCH PAGE
 //
 app.get('/advanced', function(req, res) {
-  res.sendFile(path.join(__dirname, "/../views/advanced.html"));
+  var session = req.session.admin;
+  if(session) 
+  res.sendFile(path.join(__dirname, "/../views/advancedAdmin.html"));
+  else
+    res.sendFile(path.join(__dirname, "/../views/advanced.html"));
+
+
 });
 
 app.get('/help', function(req, res) {
    res.sendFile(path.join(__dirname, "/../views/help.html"));
-
+   
 });
 //
 //ADVANCED SEARCH CODE
@@ -381,8 +389,14 @@ app.post('/advancedSearch', function(req, res) {
         
 
       }
+      var session = req.session.admin;
+      if(session == true) 
+        res.render(path.join(__dirname, '../views/resultsAdmin.handlebars'), {search: search, buttonVals: buttonVals, results: items, fail: fail});
+      else 
+        res.render(path.join(__dirname, '../views/results.handlebars'), {search: search, buttonVals: buttonVals, results: items, fail: fail});
+      
       // Render results handlebars template, passing variables containing search, button values, and sorted results
-      res.render(path.join(__dirname, '../views/results.handlebars'), {search: search, buttonVals: buttonVals, results: items, fail: fail});
+      //res.render(path.join(__dirname, '../views/results.handlebars'), {search: search, buttonVals: buttonVals, results: items, fail: fail});
     });
     db.close();
   });

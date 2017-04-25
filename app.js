@@ -1,6 +1,6 @@
 // ------------- SERVER SIDE -------------
 
-// instantiate npms
+// instantiate variables
 var http = require('http');
 var express = require('express');
 var fileUpload = require('express-fileupload');

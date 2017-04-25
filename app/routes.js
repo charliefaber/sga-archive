@@ -247,6 +247,9 @@ app.post('/checkLogin', function(req, res) {
         req.session.user = username;
         res.redirect('/upload');
       }
+      else {
+        res.redirect('/login');
+      }
     });
   });
 });

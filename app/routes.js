@@ -106,12 +106,12 @@ app.post('/search', function(req, res) {
             return new Date(b.date).getTime() - new Date(a.date).getTime();
           });
         }
-        else if(filter == "highest") {
+        else if(filter == "cost (highest first)") {
           items.sort(function(a, b) {
             return b.amount - a.amount;
           });
         }
-        else if(filter == "lowest") {
+        else if(filter == "cost (lowest first)") {
           items.sort(function(a, b) {
             return a.amount - b.amount;
           });

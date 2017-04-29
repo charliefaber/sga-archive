@@ -86,7 +86,7 @@ app.post('/search', function(req, res) {
     relevancy = true;
   else if(filter == "recency") 
     recency = true;
-  else if(filter == "highest") 
+  else if(filter == "cost (highest first)") 
     highest = true;
   else 
     lowest = true;
@@ -141,7 +141,7 @@ app.post('/advancedSearch', function(req, res) {
      relevancy = true;
   else if(filter == "recency")
     recency = true;
-  else if(filter == "highest")
+  else if(filter == "cost (highest first)")
     highest = true;
   else
     lowest = true;
@@ -204,13 +204,13 @@ app.post('/advancedSearch', function(req, res) {
           return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
       }
-      else if(filter == "highest") {
+      else if(filter == "cost (highest first)") {
         // Sort based on amount of document, highest first
         items.sort(function(a, b) {
           return b.amount - a.amount;
         });
       }
-      else if(filter == "lowest") {
+      else if(filter == "cost (lowest first)") {
         // Sort based on amount of document, lowest first
         items.sort(function(a, b) {
           return a.amount - b.amount;

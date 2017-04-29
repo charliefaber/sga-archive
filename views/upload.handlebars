@@ -14,17 +14,17 @@
 </head>
 <script type="text/javascript">
 function checkFields() {
-	var fileName = document.getElementById("myFile").value;
-	var ext = fileName.split('.').pop();
-	var div = document.getElementById('err');
+	// var fileName = document.getElementById("myFile").value;
+	// var ext = fileName.split('.').pop();
+	// var div = document.getElementById('err');
 
-	if(!(ext == 'docx') || fileName.indexOf(' ') >= 0) {
-		document.getElementById('upload-btn').disabled = true;
-		div.innerHTML = '<center><h3 style="color:red">Error: Only files of extension docx are accepted</h3></center><br>';
-	} else if(ext == 'docx') {
-		document.getElementById('upload-btn').disabled = false;
-		div.innerHTML = "";
-	}
+	// if(!(ext == 'docx') || fileName.indexOf(' ') >= 0) {
+	// 	document.getElementById('upload-btn').disabled = true;
+	// 	div.innerHTML = '<center><h3 style="color:red">Error: Only files of extension docx are accepted</h3></center><br>';
+	// } else if(ext == 'docx') {
+	// 	document.getElementById('upload-btn').disabled = false;
+	// 	div.innerHTML = "";
+	// }
 }
 </script>
 

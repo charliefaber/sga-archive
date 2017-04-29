@@ -259,6 +259,7 @@ app.post('/upload', function(req, res) {
     return res.status(400).send('No files were uploaded.');
 
   var myFile = req.files.myFile;
+  var ext = myFile.name.split('.').pop();
   var idText = req.body.idText;
   idText = idText.trim();
   var doctypeSelect = req.body.doctypeSelect;
@@ -267,8 +268,9 @@ app.post('/upload', function(req, res) {
   var tagText = req.body.tagText;
   var bodyText = "";
 
-  
-  var filePath = path.join(__dirname,`../uploads/${idText}.docx`);
+  console.log(myFile);
+  console.log(ext);
+  var filePath = path.join(__dirname,`../uploads/${idText}.${ext}`);
   myFile.mv(filePath, function(err) {
     if (err)
       return res.status(500).send(err);

@@ -35,8 +35,16 @@ app.get('/advanced', function(req, res) {
 
 app.get('/download/:file(*)', function(req, res){
   var file = req.params.file;
-  var p = path.join(__dirname, "../uploads/", file + ".docx");
-  res.download(p);
+  MongoClient.connect(configDb.url, function(err, db) {
+    assert.equal(null, err);
+
+    db.collection('documents').find({_id:file}).toArray(function(err, items) {
+      // var p = path.join(__dirname, "../uploads/", items[0].path);
+      res.download(items[0].path);
+    });
+    db.close();
+  });
+
 });
 
 app.get('/login', function(req, res) {
@@ -259,7 +267,8 @@ app.post('/upload', function(req, res) {
     return res.status(400).send('No files were uploaded.');
 
   var myFile = req.files.myFile;
-  var ext = myFile.name.split('.').pop();
+  var filename = myFile.name;
+  var ext = filename.split('.').pop();
   var idText = req.body.idText;
   idText = idText.trim();
   var doctypeSelect = req.body.doctypeSelect;
@@ -270,7 +279,7 @@ app.post('/upload', function(req, res) {
 
   console.log(myFile);
   console.log(ext);
-  var filePath = path.join(__dirname,`../uploads/${idText}.${ext}`);
+  var filePath = path.join(__dirname,`../uploads/${filename}`);
   myFile.mv(filePath, function(err) {
     if (err)
       return res.status(500).send(err);
@@ -280,7 +289,7 @@ app.post('/upload', function(req, res) {
     });
   });
   
-  var upload = {idText: idText, doctypeSelect: doctypeSelect, dollarText: dollarText, dateSelect: dateSelect, tagText:tagText, bodyText:bodyText};
+  var upload = {idText: idText, filename: filename, doctypeSelect: doctypeSelect, dollarText: dollarText, dateSelect: dateSelect, tagText:tagText, bodyText:bodyText};
 
   MongoClient.connect(configDb.url, function(err, db) {
     assert.equal(null, err);

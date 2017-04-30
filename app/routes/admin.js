@@ -10,6 +10,7 @@ var textract = require('textract');
 module.exports = function(app){
 
 app.post('/upload', function(req, res) {
+  res.render('upload', { title: 'upload' });
   if (!req.files)
     return res.status(400).send('No files were uploaded.');
 

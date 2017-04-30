@@ -17,6 +17,7 @@ module.exports = function(app){
     });
 
     app.post('/checkLogin', function(req, res) {
+    res.render('checkLogin', { title: 'checkLogin' });
       var username = req.body.username;
       var password = req.body.password;
 

@@ -69,9 +69,9 @@ module.exports = function(app){
 
             var session = req.session.admin;
             if(session == true)
-              res.render(path.join(__dirname, '../views/resultsAdmin.handlebars'), {search: search, buttonVals: buttonVals, results: items, fail: fail});
+              res.render(path.join(__dirname, '../../views/resultsAdmin.handlebars'), {search: search, buttonVals: buttonVals, results: items, fail: fail});
             else
-              res.render(path.join(__dirname, '../views/results.handlebars'), {search: search, buttonVals: buttonVals, results: items, fail: fail});
+              res.render(path.join(__dirname, '../../views/results.handlebars'), {search: search, buttonVals: buttonVals, results: items, fail: fail});
           });
         db.close();
       });
@@ -170,9 +170,9 @@ module.exports = function(app){
 
           var session = req.session.admin;
           if(session == true)
-            res.render(path.join(__dirname, '../views/resultsAdmin.handlebars'), {search: search, buttonVals: buttonVals, results: items, fail: fail});
+            res.render(path.join(__dirname, '../../views/resultsAdmin.handlebars'), {search: search, buttonVals: buttonVals, results: items, fail: fail});
           else
-            res.render(path.join(__dirname, '../views/results.handlebars'), {search: search, buttonVals: buttonVals, results: items, fail: fail});
+            res.render(path.join(__dirname, '../../views/results.handlebars'), {search: search, buttonVals: buttonVals, results: items, fail: fail});
         });
         db.close();
       });

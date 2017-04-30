@@ -46,7 +46,7 @@ var hbs = exphbs.create({
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
-require('./app/routes.js')(app);
+require('./app/routes')(app);
 
 //routers
 //require('./config/passport.js');

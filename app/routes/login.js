@@ -1,7 +1,10 @@
 var express = require('express');
+var MongoClient = require('mongodb').MongoClient;
+var configDb = require('../../config/database.js');
 var app = express();
 var bodyParser = require('body-parser');
 var bcrypt = require('bcrypt-nodejs');
+var path = require('path');
 
 module.exports = function(app){
 
@@ -17,7 +20,6 @@ module.exports = function(app){
     });
 
     app.post('/checkLogin', function(req, res) {
-    res.render('checkLogin', { title: 'checkLogin' });
       var username = req.body.username;
       var password = req.body.password;
 

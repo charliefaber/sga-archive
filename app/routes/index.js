@@ -4,8 +4,14 @@ var configDb = require('../../config/database.js');
 var path = require('path');
 var express = require('express');
 var app = express();
+var fs = require('fs');
 
 module.exports = function(app){
+    fs.readdirSync(__dirname).forEach(function(file) {
+        if (file == "index.js") return;
+        var name = file.substr(0, file.indexOf('.'));
+        require('./' + name)(app);
+    });
 
     app.get('/', function(req, res) {
         MongoClient.connect(configDb.url, function(err, db) {
